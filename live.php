@@ -112,11 +112,7 @@ function addLike($user) {
     }
 }
 
-/**
- * Add a comment to list
- * @param InstagramAPI\Response\Model\User    $user    User info
- * @param InstagramAPI\Response\Model\Comment $comment Comment info
- */
+
 function addComment($user, $comment) {
     global $cfg_callbacks;
 
@@ -145,10 +141,7 @@ function addComment($user, $comment) {
     }
 }
 
-/**
- * Set pinned comment in storage
- * @param string $comment Comment ID
- */
+
 function setPinnedComment($commentId) {
     $current = json_decode(@file_get_contents(__DIR__ . '/live_response'), true);
     if (!is_array($current))
@@ -189,15 +182,9 @@ function writeOutput($cmd, $msg) {
     file_put_contents(__DIR__ . '/response', json_encode($response));
 }
 
-/**
- * The handler for interpreting the commands passed via the command line.
- */
+
 function startHandler($ig, $broadcastId, $streamUrl, $streamKey) {
-    // The following loop performs important requests to obtain information
-    // about the broadcast while it is ongoing.
-    // NOTE: This is REQUIRED if you want the comments and likes to appear
-    // in your saved post-live feed.
-    // NOTE: These requests are sent *while* the video is being broadcasted.
+
     $lastCommentTs = 0;
     $lastCommentPin = false;
     $lastLikeTs = 0;
@@ -295,11 +282,7 @@ function startHandler($ig, $broadcastId, $streamUrl, $streamKey) {
             writeOutput('viewers', $output);
         }
 
-        // Get broadcast comments.
-        // - The latest comment timestamp will be required for the next
-        //   getComments() request.
-        // - There are two types of comments: System comments and user comments.
-        //   We compare both and keep the newest (most recent) timestamp.
+ 
         $commentsResponse = $ig->live->getComments($broadcastId, $lastCommentTs);
         $systemComments = $commentsResponse->getSystemComments();
         $comments = $commentsResponse->getComments();
@@ -345,9 +328,7 @@ function startHandler($ig, $broadcastId, $streamUrl, $streamKey) {
     } while(!$exit);
 }
 
-/**
- * Logs a message in console but it actually uses new lines.
- */
+
 function logM($message) {
     print $message."\n";
 }
